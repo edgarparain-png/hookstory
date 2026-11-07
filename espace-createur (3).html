@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace créateur : HookStory</title>
+  <style>
+    :root {
+      --fond: #08070d; --surface: #120f1c; --surface-2: #1a1628; --texte: #f5f3ff; --gris: #a59fc2;
+      --bordure: #2a2340; --violet: #8b5cf6; --violet-clair: #c4b5fd;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) { --fond: #fbf9ff; --surface: #ffffff; --surface-2: #f2eefc; --texte: #1b1530; --gris: #5f5878; --bordure: #ddd6f3; --violet-clair: #6d4fd6; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--fond); color: var(--texte); line-height: 1.5; }
+    a { color: inherit; }
+    .mise { display: grid; min-height: 100vh; }
+    @media (min-width: 900px) { .mise { grid-template-columns: 220px 1fr; } }
+
+    aside { background: var(--surface); border-right: 1px solid var(--bordure); padding: 22px 18px; }
+    .logo { font-weight: 800; font-size: 1.15rem; text-decoration: none; letter-spacing: -.02em; }
+    .logo span { color: var(--violet); }
+    aside nav { margin-top: 26px; display: grid; gap: 4px; }
+    aside nav a { padding: 10px 12px; border-radius: 10px; text-decoration: none; color: var(--gris); font-size: .95rem; }
+    aside nav a.actif, aside nav a:hover { background: var(--surface-2); color: var(--texte); }
+
+    main { padding: 26px 20px 60px; max-width: 1100px; width: 100%; }
+    header.haut { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    h1 { font-size: 1.7rem; margin: 0; letter-spacing: -.02em; }
+    h2 { font-size: 1.15rem; margin: 0 0 12px; }
+    .bouton { display: inline-block; background: var(--violet); color: #fff; padding: 11px 18px; border-radius: 12px; text-decoration: none; font-weight: 700; border: none; font: inherit; cursor: pointer; }
+    .bouton.fantome { background: transparent; color: var(--texte); border: 1px solid var(--bordure); }
+
+    .stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 24px; }
+    .stat, .carte { background: var(--surface); border: 1px solid var(--bordure); border-radius: 16px; padding: 18px; }
+    .stat .valeur { font-size: 1.7rem; font-weight: 800; margin-top: 4px; }
+    .petit { color: var(--gris); font-size: .88rem; }
+    .grille { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .grille { grid-template-columns: 1.6fr 1fr; } }
+
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    th, td { text-align: left; padding: 11px 6px; border-bottom: 1px solid var(--bordure); }
+    th { color: var(--gris); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: .8rem; border: 1px solid var(--bordure); color: var(--gris); }
+    .badge.pret { border-color: var(--violet); color: var(--violet-clair); }
+
+    .barre { height: 8px; border-radius: 8px; background: var(--surface-2); overflow: hidden; margin: 10px 0 6px; }
+    .barre div { height: 100%; background: var(--violet); }
+    .liste { display: grid; gap: 10px; }
+    .liste a { display: flex; justify-content: space-between; gap: 10px; padding: 12px; border-radius: 12px; background: var(--surface-2); text-decoration: none; }
+    .bloc-note { background: var(--surface-2); border-left: 4px solid var(--violet); padding: 12px 14px; border-radius: 10px; font-size: .9rem; color: var(--gris); margin-top: 14px; }
+  
+    .journal form { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { .journal form { grid-template-columns: 1fr; } }
+    .journal form .plein { grid-column: 1 / -1; }
+    .journal input, .journal select, .journal textarea { font: inherit; padding: 10px; border: 1px solid var(--bordure); border-radius: 10px; background: var(--surface-2); color: var(--texte); width: 100%; }
+    .journal fieldset { grid-column: 1 / -1; border: 1px solid var(--bordure); border-radius: 12px; padding: 10px 14px; margin: 0; }
+    .journal fieldset label { display: flex; gap: 8px; align-items: center; padding: 4px 0; font-size: .92rem; }
+    .journal .bouton { border: none; cursor: pointer; font: inherit; justify-self: start; }
+    .entree { border: 1px solid var(--bordure); border-radius: 14px; padding: 14px; margin-top: 12px; background: var(--surface-2); }
+    .entree h3 { margin: 0 0 4px; font-size: 1rem; }
+    .entree .petit { margin: 0; }
+    .entree ul { margin: 8px 0 0; padding-left: 18px; font-size: .9rem; color: var(--gris); }
+    .entree button { margin-top: 8px; background: transparent; border: 1px solid var(--bordure); color: var(--texte); border-radius: 10px; padding: 6px 10px; cursor: pointer; font: inherit; font-size: .85rem; }
+  </style>
+</head>
+<body>
+<div class="mise">
+  <aside>
+    <a href="index.html" class="logo">HookStory<span>.io</span></a>
+    <nav>
+      <a href="#" class="actif">Tableau de bord</a>
+      <a href="#">Mes vidéos</a>
+      <a href="#">Découpage</a>
+      <a href="#">Thèmes</a>
+      <a href="#">Abonnement</a>
+      <a href="#">Paramètres</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="haut">
+      <div>
+        <h1>Bonjour</h1>
+        <p class="petit">Voici l'activité de votre espace. Les données ci-dessous sont des exemples.</p>
+      </div>
+      <a href="index.html#creer" class="bouton">Nouvelle vidéo +</a>
+    </header>
+
+    <section class="stats">
+      <div class="stat"><div class="petit">Vidéos créées</div><div class="valeur">12</div></div>
+      <div class="stat"><div class="petit">Crédits restants</div><div class="valeur">8</div><div class="barre"><div style="width:40%"></div></div><div class="petit">sur 20 ce mois-ci</div></div>
+      <div class="stat"><div class="petit">Extraits découpés</div><div class="valeur">5</div></div>
+      <div class="stat"><div class="petit">Formule</div><div class="valeur">Découverte</div><div class="petit">Abonnements bientôt disponibles</div></div>
+    </section>
+
+    <section class="grille">
+      <div class="carte">
+        <h2>Mes vidéos</h2>
+        <table>
+          <thead><tr><th>Titre</th><th>Univers</th><th>Durée</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Le fruit qui travaille</td><td>Objets 3D</td><td>30 s</td><td><span class="badge pret">Prête</span></td></tr>
+            <tr><td>Le duel des téléphones</td><td>Objets 3D</td><td>15 s</td><td><span class="badge pret">Prête</span></td></tr>
+            <tr><td>Une semaine plus tard</td><td>Animé</td><td>45 s</td><td><span class="badge">En cours</span></td></tr>
+            <tr><td>Témoignage client</td><td>Réaliste</td><td>60 s</td><td><span class="badge">Brouillon</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="liste">
+        <div class="carte">
+          <h2>Raccourcis</h2>
+          <div class="liste">
+            <a href="index.html#creer"><span>Créer une vidéo</span><span class="petit">→</span></a>
+            <a href="index.html#decoupage"><span>Découper une vidéo</span><span class="petit">→</span></a>
+            <a href="index.html#themes"><span>Choisir un thème</span><span class="petit">→</span></a>
+          </div>
+        </div>
+        <div class="carte">
+          <h2>Mon abonnement</h2>
+          <p class="petit">Vous êtes sur la formule Découverte. Les abonnements payants ouvriront à la sortie du service.</p>
+          <div class="bloc-note">Aucun paiement n'est demandé pour le moment.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:24px">
+
+        <div class="carte journal" id="journal">
+          <h2>Journal de bord</h2>
+          <p class="petit">Notez chaque publication, et vérifiez la checklist avant de publier. Les entrées sont enregistrées sur cet appareil.</p>
+          <form id="form-journal">
+            <input type="text" id="j-titre" placeholder="Titre de la vidéo" required class="plein">
+            <select id="j-plateforme">
+              <option>TikTok</option><option>Instagram Reels</option><option>Snapchat</option><option>YouTube Shorts</option>
+            </select>
+            <input type="date" id="j-date" required>
+            <select id="j-statut" class="plein">
+              <option>À préparer</option><option>Prête à publier</option><option>Publiée</option>
+            </select>
+            <fieldset>
+              <legend class="petit">Checklist avant publication</legend>
+              <label><input type="checkbox" value="Sous-titres vérifiés"> Sous-titres vérifiés</label>
+              <label><input type="checkbox" value="Droits des images et de la musique vérifiés"> Droits des images et de la musique vérifiés</label>
+              <label><input type="checkbox" value="Format vertical 9:16"> Format vertical 9:16</label>
+              <label><input type="checkbox" value="Légende et mots-clés prêts"> Légende et mots-clés prêts</label>
+              <label><input type="checkbox" value="Aperçu relu sur téléphone"> Aperçu relu sur téléphone</label>
+            </fieldset>
+            <textarea id="j-notes" rows="2" placeholder="Notes (idée, légende, ce qui a marché)" class="plein"></textarea>
+            <button type="submit" class="bouton">Ajouter au journal</button>
+          </form>
+          <p class="petit" id="j-message" style="margin-top:8px"></p>
+          <div id="j-liste"></div>
+        </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  // À RENSEIGNER : mêmes valeurs que sur la page d'accueil (Project Settings > API).
+  const SUPABASE_URL = "https://mjigztacfzicajrqnkud.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_NMeZhLmoMLXDlX9vsAIHPA_17zrldtR";
+
+  const CLE = "hookstory-journal";
+  const liste = document.getElementById("j-liste");
+  const message = document.getElementById("j-message");
+  const form = document.getElementById("form-journal");
+  let client = null;
+  let userId = null;
+
+  function configure() {
+    return SUPABASE_URL.indexOf("VOTRE-PROJET") === -1 && SUPABASE_ANON_KEY.indexOf("VOTRE-CLE") === -1 && !!window.supabase;
+  }
+
+  function lireLocal() {
+    try { return JSON.parse(localStorage.getItem(CLE)) || []; } catch (e) { return []; }
+  }
+  function ecrireLocal(entrees) {
+    try { localStorage.setItem(CLE, JSON.stringify(entrees)); return true; } catch (e) { return false; }
+  }
+  function echapper(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+
+  async function lire() {
+    if (client && userId) {
+      const r = await client.from("journal").select("id, data").order("created_at", { ascending: false });
+      if (r.error) { message.textContent = "Lecture impossible : " + r.error.message; return []; }
+      return r.data.map(function (x) { return { id: x.id, entree: x.data }; });
+    }
+    return lireLocal().map(function (e, i) { return { id: "local-" + i, entree: e }; });
+  }
+
+  async function ajouter(entree) {
+    if (client && userId) {
+      const r = await client.from("journal").insert({ data: entree });
+      return !r.error;
+    }
+    const entrees = lireLocal();
+    entrees.unshift(entree);
+    return ecrireLocal(entrees);
+  }
+
+  async function supprimer(item, index) {
+    if (client && userId && typeof item.id === "number") {
+      const r = await client.from("journal").delete().eq("id", item.id);
+      return !r.error;
+    }
+    const entrees = lireLocal();
+    entrees.splice(index, 1);
+    return ecrireLocal(entrees);
+  }
+
+  async function afficher() {
+    const items = await lire();
+    liste.innerHTML = "";
+    if (!items.length) {
+      liste.innerHTML = '<p class="petit" style="margin-top:12px">Aucune entrée pour le moment.</p>';
+      return;
+    }
+    items.forEach(function (item, i) {
+      const e = item.entree;
+      const coches = e.checklist && e.checklist.length
+        ? "<ul>" + e.checklist.map(function (c) { return "<li>" + echapper(c) + "</li>"; }).join("") + "</ul>"
+        : '<p class="petit">Checklist non cochée.</p>';
+      const div = document.createElement("div");
+      div.className = "entree";
+      div.innerHTML = "<h3>" + echapper(e.titre) + "</h3>" +
+        '<p class="petit">' + echapper(e.plateforme) + " · " + echapper(e.date) + " · " + echapper(e.statut) + "</p>" +
+        (e.notes ? '<p class="petit" style="margin-top:6px">' + echapper(e.notes) + "</p>" : "") + coches +
+        '<button type="button" data-index="' + i + '" data-id="' + echapper(String(item.id)) + '">Supprimer</button>';
+      liste.appendChild(div);
+    });
+    liste._items = items;
+  }
+
+  form.addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    const checklist = Array.from(form.querySelectorAll("fieldset input[type=checkbox]:checked")).map(function (c) { return c.value; });
+    const entree = {
+      titre: document.getElementById("j-titre").value.trim(),
+      plateforme: document.getElementById("j-plateforme").value,
+      date: document.getElementById("j-date").value,
+      statut: document.getElementById("j-statut").value,
+      notes: document.getElementById("j-notes").value.trim(),
+      checklist: checklist
+    };
+    const ok = await ajouter(entree);
+    if (ok) {
+      form.reset();
+      message.textContent = userId ? "Entrée ajoutée à votre compte." : "Entrée ajoutée sur cet appareil.";
+      await afficher();
+    } else {
+      message.textContent = "Impossible d'enregistrer. Réessayez.";
+    }
+  });
+
+  liste.addEventListener("click", async function (ev) {
+    const bouton = ev.target.closest && ev.target.closest("button[data-index]");
+    if (!bouton) return;
+    const i = Number(bouton.getAttribute("data-index"));
+    const item = liste._items[i];
+    await supprimer(item, i);
+    await afficher();
+  });
+
+  async function initialiser() {
+    if (configure()) {
+      client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const r = await client.auth.getSession();
+      userId = r.data.session ? r.data.session.user.id : null;
+      if (!userId) message.textContent = "Connectez-vous sur la page d'accueil (bouton Connexion) pour retrouver votre journal partout. Pour l'instant, les entrées restent sur cet appareil.";
+    } else {
+      message.textContent = "Journal enregistré sur cet appareil. La sauvegarde dans votre compte sera activée une fois le service configuré.";
+    }
+    await afficher();
+  }
+
+  initialiser();
+})();
+</script>
+
+</body>
+</html>
